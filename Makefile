@@ -1,25 +1,27 @@
 NAME = pipex
-SRC = pipex.c \
+SRC = main.c \
 	child_process.c \
-	parent_process.c \
+	init.c \
 
 CFLAG = -Wall -Wextra -Werror
 CC = cc
 
 OBJ = $(SRC:.c=.o)
 FT_PRINTF_PATH = ft_printf
-FT_PRINT_LIB = ft_printf/libftprintf.a
 LIBFT_PATH = libft
-LIBFT_LIB = libft/libft.a
+FT_PRINT_LIB = -L ${FT_PRINTF_PATH} -lft 
+LIBFT_LIB = -L ${LIBFT_PATH} -lftprintf
 
-$(NAME): $(OBJ) $(FT_PRINT_LIB) $(LIBFT_LIB)
-	@ $(CC) $(CFLAG) -o $(NAME) $(OBJ) $(FT_PRINT_LIB) $(LIBFT_LIB) 
+$(NAME): $(OBJ)
+	cd $(LIBFT_PATH) && make all
+	cd $(FT_PRINTF_PATH) && make all
+	$(CC) $(CFLAG) $(OBJ) $(FT_PRINT_LIB) $(LIBFT_LIB) -o $(NAME)
 
-$(FT_PRINT_LIB):
-	@ $(MAKE) -C $(FT_PRINTF_PATH)
+# $(FT_PRINT_LIB):
+# 	cd $(FT_PRINTF_PATH) && make
 
-$(LIBFT_LIB):
-	@ $(MAKE) -C $(LIBFT_PATH)
+# $(LIBFT_LIB):
+# 	cd $(LIBFT_PATH) && make
 
 all: $(NAME)
 
