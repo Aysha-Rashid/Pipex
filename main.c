@@ -6,7 +6,7 @@
 /*   By: ayal-ras <ayal-ras@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/25 14:20:41 by ayal-ras          #+#    #+#             */
-/*   Updated: 2023/12/27 19:50:39 by ayal-ras         ###   ########.fr       */
+/*   Updated: 2023/12/28 18:30:18 by ayal-ras         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,10 @@
 // wait:
 // waitpid:
 // unlink:
+// 
+// what is not working?
+// outfile permission error thats why i couldnt display things in outfile
+// can't use redirection
 
 #include "pipex.h"
 
@@ -36,30 +40,34 @@ int	main(int argc, char **argv, char **env)
 {
 	pid_t	pid;
 	t_data	data;
-	int		pipe_fd[2]; //pipe
+	int		pipe_fd[2];
 
 	if (argc == 5)
 	{
 		init(&data, argv);
-		pipe(pipe_fd);
+		if ((pipe(pipe_fd)) == -1)
+			exit (0);
 		data.pid_1 = fork();
+		if (data.pid_1 == -1)
+			pid_error();
 		if (data.pid_1 == 0)
 			child_process(data, env, pipe_fd);
-		data.pid_1 = fork();
+		data.pid_2 = fork();
+		if (data.pid_2 == -1)
+			pid_error();
 		if (data.pid_2 == 0)
 			another_child_process(data, env, pipe_fd);
-			// parent_process(pipe_fd[0]);
-		waitpid(pid, &data.status, 0); // return the process ID of the termination process
-		// status is going to hold the exit status of the child process and this
-		// is useful to know for the parent as they will know when to stop waiting
+		parent_process(data, env, pipe_fd);
 	}
 	else
-	{
-		ft_printf("4 arguments needed!\n");
-		return (0);
-	}
+		arg_error();
 }
 
+void	arg_error(void)
+{
+	perror("4 arguments needed!\n");
+	exit (1);
+}
 // - Inside the pipe, everything goes to one of its ends, 
 //   one end will write and the other will read (more on this in section 4).
 // - end[1] is the child process, and end[0] the parent process: the child writes, 

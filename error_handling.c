@@ -1,32 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   error_handling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ayal-ras <ayal-ras@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/25 14:20:11 by ayal-ras          #+#    #+#             */
-/*   Updated: 2023/12/28 18:29:38 by ayal-ras         ###   ########.fr       */
+/*   Created: 2023/12/28 18:01:55 by ayal-ras          #+#    #+#             */
+/*   Updated: 2023/12/28 19:02:15 by ayal-ras         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	init(t_data *data, char **argv)
+void	dup2_error(void)
 {
-	data->infile = open(argv[1], O_RDONLY);
-	if (data->infile == -1)
-		file_error();
-	data->cmd1 = ft_cmd(argv[2]);
-	data->cmd2 = ft_cmd(argv[3]);
-	data->outfile = open(argv[4], O_WRONLY | O_CREAT, S_IRUSR);
-	if (data->outfile == -1)
-		file_error();
+	perror("dup2 failed\n");
+	exit(1);
 }
 
-char	**ft_cmd(char *s)
+void	cmd_error(void)
 {
-	if (!s)
-		return (NULL);
-	return (ft_split(s, ' '));
+	perror("Error finding command path\n");
+	exit(1);
+}
+
+void	pid_error(void)
+{
+	perror("Error pid\n");
+	exit(1);
+}
+
+void	file_error(void)
+{
+	perror("Permission/error file\n");
+	exit(0);
+}
+
+void	close_error(void)
+{
+	perror("not properly closed\n");
+	exit(0);
 }

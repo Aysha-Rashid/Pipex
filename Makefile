@@ -2,6 +2,8 @@ NAME = pipex
 SRC = main.c \
 	child_process.c \
 	init.c \
+	error_handling.c \
+	path.c \
 
 CFLAG = -Wall -Wextra -Werror
 CC = cc
@@ -16,12 +18,6 @@ $(NAME): $(OBJ)
 	cd $(LIBFT_PATH) && make all
 	cd $(FT_PRINTF_PATH) && make all
 	$(CC) $(CFLAG) $(OBJ) $(FT_PRINT_LIB) $(LIBFT_LIB) -o $(NAME)
-
-# $(FT_PRINT_LIB):
-# 	cd $(FT_PRINTF_PATH) && make
-
-# $(LIBFT_LIB):
-# 	cd $(LIBFT_PATH) && make
 
 all: $(NAME)
 
