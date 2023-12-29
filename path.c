@@ -6,7 +6,7 @@
 /*   By: ayal-ras <ayal-ras@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 18:13:33 by ayal-ras          #+#    #+#             */
-/*   Updated: 2023/12/28 18:25:56 by ayal-ras         ###   ########.fr       */
+/*   Updated: 2023/12/29 15:57:33 by ayal-ras         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,14 @@ char	*cmd_path(char	*cmd, char **paths)
 
 	if (!cmd)
 		return (NULL);
-	i = -1;
-	while (cmd[++i])
+	i = 0;
+	while (cmd[i++])
 	{
 		if (cmd[i] == '/')
 		{
 			if (access(cmd, F_OK | X_OK) == 0)
 				return (cmd);
-			exit(0);
+			exit(1);
 		}
 	}
 	paths = paths_add_slash(paths);
@@ -50,14 +50,15 @@ char	**find_paths_and_split(char **envp)
 	if (!envp)
 		return (NULL);
 	envp_path = NULL;
-	i = -1;
-	while (envp[++i])
+	i = 0;
+	while (envp[i])
 	{
 		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
 		{
 			envp_path = ft_substr(envp[i], 5, ft_strlen(envp[i]) - 5);
 			break ;
 		}
+		i++;
 	}
 	paths = ft_split(envp_path, ':');
 	if (envp_path)
@@ -70,8 +71,11 @@ char	**paths_add_slash(char **paths)
 	int		i;
 
 	paths = find_paths_and_split(paths);
-	i = -1;
-	while (paths[++i])
+	i = 0;
+	while (paths[i])
+	{
 		paths[i] = ft_strjoin(paths[i], "/");
+		i++;
+	}
 	return (paths);
 }

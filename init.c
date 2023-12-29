@@ -6,7 +6,7 @@
 /*   By: ayal-ras <ayal-ras@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/25 14:20:11 by ayal-ras          #+#    #+#             */
-/*   Updated: 2023/12/28 18:29:38 by ayal-ras         ###   ########.fr       */
+/*   Updated: 2023/12/29 14:49:32 by ayal-ras         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	init(t_data *data, char **argv)
 		file_error();
 	data->cmd1 = ft_cmd(argv[2]);
 	data->cmd2 = ft_cmd(argv[3]);
-	data->outfile = open(argv[4], O_WRONLY | O_CREAT, S_IRUSR);
+	data->outfile = open(argv[4], O_RDWR | O_TRUNC | O_CREAT, 0644);
 	if (data->outfile == -1)
 		file_error();
 }

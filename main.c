@@ -6,7 +6,7 @@
 /*   By: ayal-ras <ayal-ras@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/25 14:20:41 by ayal-ras          #+#    #+#             */
-/*   Updated: 2023/12/28 18:30:18 by ayal-ras         ###   ########.fr       */
+/*   Updated: 2023/12/29 15:14:28 by ayal-ras         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	main(int argc, char **argv, char **env)
 	{
 		init(&data, argv);
 		if ((pipe(pipe_fd)) == -1)
-			exit (0);
+			exit (1);
 		data.pid_1 = fork();
 		if (data.pid_1 == -1)
 			pid_error();

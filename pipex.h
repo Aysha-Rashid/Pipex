@@ -6,12 +6,11 @@
 /*   By: ayal-ras <ayal-ras@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 18:33:14 by ayal-ras          #+#    #+#             */
-/*   Updated: 2023/12/28 19:21:44 by ayal-ras         ###   ########.fr       */
+/*   Updated: 2023/12/29 15:49:38 by ayal-ras         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft/libft.h"
-#include "ft_printf/ft_printf.h"
 #include <fcntl.h>
 #include <sys/wait.h>
 #include <sys/types.h>
@@ -48,3 +47,4 @@ void	file_error(void);
 void	arg_error(void);
 void	close_error(void);
 void	ft_cmd_not_found(char *path_cmd, char	**cmd);
+void	ft_error_handle(t_data data, int *pipe_fd);

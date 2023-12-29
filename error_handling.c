@@ -6,7 +6,7 @@
 /*   By: ayal-ras <ayal-ras@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 18:01:55 by ayal-ras          #+#    #+#             */
-/*   Updated: 2023/12/28 19:22:25 by ayal-ras         ###   ########.fr       */
+/*   Updated: 2023/12/29 15:58:33 by ayal-ras         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,14 @@ void	file_error(void)
 void	close_error(void)
 {
 	perror("not properly closed\n");
-	exit(0);
+	exit(1);
 }
 
 void	ft_cmd_not_found(char *path_cmd, char	**cmd)
 {
 	if (!path_cmd)
 	{
-		write(2, "Command not found: ", 19);
-		write(2, cmd[0], ft_strlen(cmd[0]));
-		write(2, "\n", 1);
-		exit(1);
+		perror("Command not found \n");
+		exit(127);
 	}
 }
