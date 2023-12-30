@@ -6,7 +6,7 @@
 /*   By: ayal-ras <ayal-ras@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 15:44:15 by ayal-ras          #+#    #+#             */
-/*   Updated: 2023/12/24 19:44:45 by ayal-ras         ###   ########.fr       */
+/*   Updated: 2023/12/30 18:41:59 by ayal-ras         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,13 +95,14 @@ char	**ft_split(char const *s, char c)
 	if (!str)
 		return (NULL);
 	str[count] = NULL;
-	i = 0;
+	i = count;
 	split_into_substrings(str, s, c);
 	while (i > 0)
 	{
-		if (str[i] == NULL)
+		if (str[i - 1] == NULL)
 		{
-			free(str[i]);
+			free(str[i - 1]);
+			free(str);
 			return (NULL);
 		}
 		i--;

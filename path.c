@@ -6,15 +6,15 @@
 /*   By: ayal-ras <ayal-ras@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 18:13:33 by ayal-ras          #+#    #+#             */
-/*   Updated: 2023/12/29 15:57:33 by ayal-ras         ###   ########.fr       */
+/*   Updated: 2023/12/30 18:14:23 by ayal-ras         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-char	*cmd_path(char	*cmd, char **paths)
+char	*cmd_file(char	*cmd, char **paths)
 {
-	char	*cmd_path;
+	char	*cmd_file;
 	int		i;
 
 	if (!cmd)
@@ -26,17 +26,17 @@ char	*cmd_path(char	*cmd, char **paths)
 		{
 			if (access(cmd, F_OK | X_OK) == 0)
 				return (cmd);
-			exit(1);
+			return (NULL);
 		}
 	}
 	paths = paths_add_slash(paths);
 	i = -1;
 	while (paths[++i])
 	{
-		cmd_path = ft_strjoin(paths[i], cmd);
-		if (access(cmd_path, F_OK | X_OK) == 0)
-			return (cmd_path);
-		free(cmd_path);
+		cmd_file = ft_strjoin(paths[i], cmd);
+		if (access(cmd_file, F_OK | X_OK) == 0)
+			return (cmd_file);
+		free(cmd_file);
 	}
 	return (NULL);
 }
@@ -66,11 +66,12 @@ char	**find_paths_and_split(char **envp)
 	return (paths);
 }
 
-char	**paths_add_slash(char **paths)
+char	**paths_add_slash(char **env)
 {
 	int		i;
+	char	**paths;
 
-	paths = find_paths_and_split(paths);
+	paths = find_paths_and_split(env);
 	i = 0;
 	while (paths[i])
 	{

@@ -1,28 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_calloc.c                                        :+:      :+:    :+:   */
+/*   error_handling1.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ayal-ras <ayal-ras@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/13 18:30:22 by ayal-ras          #+#    #+#             */
-/*   Updated: 2023/12/30 15:29:36 by ayal-ras         ###   ########.fr       */
+/*   Created: 2023/12/30 20:00:25 by ayal-ras          #+#    #+#             */
+/*   Updated: 2023/12/30 20:41:06 by ayal-ras         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "pipex.h"
 
-void	*ft_calloc(size_t	count, size_t	size)
+void	arg_error(void)
 {
-	char	*ptr;
+	perror("4 arguments needed!");
+	exit (1);
+}
 
-	if (size != 0 && count > __UINT32_MAX__ / size)
-		return (NULL);
-	ptr = malloc (count * size);
-	if (ptr == 0)
-	{
-		return (ptr);
-	}
-	ft_bzero (ptr, count * size);
-	return (ptr);
+void	in_file_error(void)
+{
+	perror("input doesn't exist or doesnt have the permission");
+	exit(0);
 }

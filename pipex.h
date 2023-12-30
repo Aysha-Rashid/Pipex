@@ -6,7 +6,7 @@
 /*   By: ayal-ras <ayal-ras@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 18:33:14 by ayal-ras          #+#    #+#             */
-/*   Updated: 2023/12/29 15:49:38 by ayal-ras         ###   ########.fr       */
+/*   Updated: 2023/12/30 19:37:46 by ayal-ras         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,15 @@ typedef struct s_data
 void	init(t_data *data, char **argv);
 void	child_process(t_data data, char **env, int *pipe_fd);
 void	another_child_process(t_data data, char **env, int *pipe_fd);
-void	parent_process(t_data data, char **env, int *pipe_fd);
+void	parent_process(t_data data, int *pipe_fd);
 char	**ft_cmd(char *s);
-char	*cmd_path(char *cmd, char **env_path);
-char	**paths_add_slash(char **paths);
+char	*cmd_file(char *cmd, char **env_path);
+char	**paths_add_slash(char **env);
 char	**find_paths_and_split(char **envp);
 void	dup2_error(void);
 void	pid_error(void);
 void	file_error(void);
 void	arg_error(void);
 void	close_error(void);
-void	ft_cmd_not_found(char *path_cmd, char	**cmd);
-void	ft_error_handle(t_data data, int *pipe_fd);
+void	ft_cmd_not_found(char *path_cmd);
+void	in_file_error(void);

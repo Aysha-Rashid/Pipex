@@ -1,20 +1,21 @@
 NAME = pipex
+
 SRC = main.c \
 	child_process.c \
 	init.c \
 	error_handling.c \
+	error_handling1.c \
 	path.c \
 
-CFLAG = -Wall -Wextra -Werror
 CC = cc
-
+CFLAGS = -Wall -Wextra -Werror
 OBJ = $(SRC:.c=.o)
 LIBFT_PATH = libft
-LIBFT_LIB = -L ${LIBFT_PATH} -lft
+LIBFT_LIB = -L${LIBFT_PATH} -lft
 
 $(NAME): $(OBJ)
-	cd $(LIBFT_PATH) && make all
-	$(CC) $(CFLAG) $(OBJ) $(LIBFT_LIB) -o $(NAME)
+	@ cd $(LIBFT_PATH) && make all
+	@ $(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(LIBFT_LIB)
 
 all: $(NAME)
 

@@ -6,7 +6,7 @@
 /*   By: ayal-ras <ayal-ras@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/25 14:20:17 by ayal-ras          #+#    #+#             */
-/*   Updated: 2023/12/29 15:50:03 by ayal-ras         ###   ########.fr       */
+/*   Updated: 2023/12/30 20:13:32 by ayal-ras         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,21 @@ void	child_process(t_data data, char **env, int *pipe_fd)
 {
 	dup2(data.infile, STDIN_FILENO);
 	dup2(pipe_fd[1], STDOUT_FILENO);
+	close(pipe_fd[0]);
+	if (pipe_fd[0] == -1)
+		close_error();
 	if (data.infile == -1)
 		dup2_error();
 	if (pipe_fd[1] == -1)
 		dup2_error();
-	data.cmd_path1 = cmd_path(data.cmd1[0], env);
-	ft_cmd_not_found(data.cmd_path1, data.cmd1);
-	close(pipe_fd[0]);
-	if (pipe_fd[0] == -1)
-		close_error();
 	close(pipe_fd[1]);
 	if (pipe_fd[1] == -1)
 		close_error();
+	close(data.infile);
+	if (data.infile == -1)
+		close_error();
+	data.cmd_path1 = cmd_file(*data.cmd1, env);
+	ft_cmd_not_found(data.cmd_path1);
 	execve(data.cmd_path1, data.cmd1, NULL);
 	perror("execve failed");
 	exit(1);
@@ -41,43 +44,40 @@ void	another_child_process(t_data data, char **env, int *pipe_fd)
 		dup2_error();
 	if (data.outfile == -1)
 		dup2_error();
-	data.cmd_path2 = cmd_path(data.cmd2[0], env);
-	ft_cmd_not_found(data.cmd_path2, data.cmd2);
 	close(pipe_fd[0]);
 	if (pipe_fd[0] == -1)
 		close_error();
 	close(pipe_fd[1]);
 	if (pipe_fd[1] == -1)
 		close_error();
+	close(data.outfile);
+	if (data.outfile == -1)
+		close_error();
+	data.cmd_path2 = cmd_file(*data.cmd2, env);
+	ft_cmd_not_found(data.cmd_path2);
 	execve(data.cmd_path2, data.cmd2, NULL);
 	perror("execve failed");
 	exit(1);
 }
 
-void	parent_process(t_data data, char **env, int *pipe_fd)
+void	parent_process(t_data data, int *pipe_fd)
 {
 	int	i;
 
-	close(pipe_fd[0]);
-	if (pipe_fd[0] == -1)
-		close_error();
 	close(pipe_fd[1]);
 	if (pipe_fd[1] == -1)
 		close_error();
-	close(data.infile);
-	if (data.infile == -1)
+	close(pipe_fd[0]);
+	if (pipe_fd[0] == -1)
 		close_error();
-	close(data.outfile);
-	if (data.outfile == -1)
-		close_error();
-	waitpid(data.pid_1, &data.status, 0);
-	waitpid(data.pid_2, &data.status1, 0);
 	i = 0;
-	while (data.cmd1[i++])
-		free(data.cmd1[i]);
+	while (data.cmd1[i])
+		free(data.cmd1[i++]);
 	free(data.cmd1);
 	i = 0;
-	while (data.cmd2[i++])
-		free(data.cmd2[i]);
+	while (data.cmd2[i])
+		free(data.cmd2[i++]);
 	free(data.cmd2);
+	waitpid(data.pid_1, &data.status, 0);
+	waitpid(data.pid_2, &data.status1, 0);
 }

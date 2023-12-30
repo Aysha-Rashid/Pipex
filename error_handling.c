@@ -6,7 +6,7 @@
 /*   By: ayal-ras <ayal-ras@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 18:01:55 by ayal-ras          #+#    #+#             */
-/*   Updated: 2023/12/29 15:58:33 by ayal-ras         ###   ########.fr       */
+/*   Updated: 2023/12/30 20:41:20 by ayal-ras         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,33 +14,33 @@
 
 void	dup2_error(void)
 {
-	perror("dup2 failed\n");
+	perror("dup2 failed");
 	exit(1);
 }
 
 void	pid_error(void)
 {
-	perror("Error pid\n");
+	perror("Error pid");
 	exit(1);
 }
 
 void	file_error(void)
 {
-	perror("Permission/error file\n");
-	exit(0);
+	perror("Permission/error file");
+	exit(1);
 }
 
 void	close_error(void)
 {
-	perror("not properly closed\n");
+	perror("not properly closed");
 	exit(1);
 }
 
-void	ft_cmd_not_found(char *path_cmd, char	**cmd)
+void	ft_cmd_not_found(char *path_cmd)
 {
 	if (!path_cmd)
 	{
-		perror("Command not found \n");
-		exit(127);
+		perror("Command not found");
+		exit(1);
 	}
 }

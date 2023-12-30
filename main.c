@@ -6,7 +6,7 @@
 /*   By: ayal-ras <ayal-ras@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/25 14:20:41 by ayal-ras          #+#    #+#             */
-/*   Updated: 2023/12/29 15:14:28 by ayal-ras         ###   ########.fr       */
+/*   Updated: 2023/12/30 20:00:43 by ayal-ras         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@
 
 int	main(int argc, char **argv, char **env)
 {
-	pid_t	pid;
 	t_data	data;
 	int		pipe_fd[2];
 
@@ -57,24 +56,8 @@ int	main(int argc, char **argv, char **env)
 			pid_error();
 		if (data.pid_2 == 0)
 			another_child_process(data, env, pipe_fd);
-		parent_process(data, env, pipe_fd);
+		parent_process(data, pipe_fd);
 	}
 	else
 		arg_error();
 }
-
-void	arg_error(void)
-{
-	perror("4 arguments needed!\n");
-	exit (1);
-}
-// - Inside the pipe, everything goes to one of its ends, 
-//   one end will write and the other will read (more on this in section 4).
-// - end[1] is the child process, and end[0] the parent process: the child writes, 
-//   while the parent reads. And since for something to be read, it must be written first,
-//   so cmd1 will be executed by the child, and cmd2 by the parent.
-// - For the child process, we want infile to be our stdin (we want it as input), 
-// 	 and end[1] to be our stdout (we want to write to end[1] the output of cmd1).
-// - In the parent process, we want end[0] to be our stdin (end[0] reads from 
-// 	 end[1] the output of cmd1), and outfile to be our stdout 
-// 	 (we want to write to it the output of cmd2).

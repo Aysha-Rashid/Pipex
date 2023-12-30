@@ -6,7 +6,7 @@
 /*   By: ayal-ras <ayal-ras@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 18:46:36 by ayal-ras          #+#    #+#             */
-/*   Updated: 2023/12/24 19:44:52 by ayal-ras         ###   ########.fr       */
+/*   Updated: 2023/12/30 15:29:53 by ayal-ras         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	*ft_strdup(const char	*s1)
 	{
 		return (NULL);
 	}
-	if (ptr >= 0)
+	if (ptr)
 	{
 		while (*s1)
 		{
