@@ -6,18 +6,14 @@
 /*   By: ayal-ras <ayal-ras@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 18:33:14 by ayal-ras          #+#    #+#             */
-/*   Updated: 2023/12/30 19:37:46 by ayal-ras         ###   ########.fr       */
+/*   Updated: 2023/12/30 21:50:56 by ayal-ras         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft/libft.h"
 #include <fcntl.h>
 #include <sys/wait.h>
-#include <sys/types.h>
-#include <signal.h>
 #include <stdio.h>
-#include <string.h>
-#include <errno.h>
 
 typedef struct s_data
 {
