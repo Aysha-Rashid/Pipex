@@ -6,7 +6,7 @@
 /*   By: ayal-ras <ayal-ras@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 18:01:55 by ayal-ras          #+#    #+#             */
-/*   Updated: 2024/01/04 19:11:16 by ayal-ras         ###   ########.fr       */
+/*   Updated: 2024/01/04 21:05:32 by ayal-ras         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,14 @@ void	ft_cmd_not_found(char *path_cmd, t_data data, int file)
 {
 	if (!path_cmd)
 	{
+		write(2, "Command not found\n", 19);
 		free(path_cmd);
 		free_path(data.cmd1);
 		free_path(data.cmd2);
 		close(file);
-		write(2, "Command not found\n", 19);
+		close(STDERR_FILENO);
+		close(STDIN_FILENO);
+		close(STDOUT_FILENO);
 		exit(1);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: ayal-ras <ayal-ras@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/25 14:20:17 by ayal-ras          #+#    #+#             */
-/*   Updated: 2024/01/04 19:08:06 by ayal-ras         ###   ########.fr       */
+/*   Updated: 2024/01/04 21:06:15 by ayal-ras         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,6 @@ void	child_process(t_data data, char **env, int *pipe_fd)
 	close(pipe_fd[0]);
 	close(pipe_fd[1]);
 	close(data.infile);
-	close(STDERR_FILENO);
-	close(STDIN_FILENO);
-	close(STDOUT_FILENO);
 	error_close_fd(data, pipe_fd);
 	data.cmd_path1 = cmd_file(*data.cmd1, env);
 	ft_cmd_not_found(data.cmd_path1, data, data.outfile);
@@ -46,9 +43,6 @@ void	another_child_process(t_data data, char **env, int *pipe_fd)
 	close(pipe_fd[0]);
 	close(pipe_fd[1]);
 	close(data.outfile);
-	close(STDERR_FILENO);
-	close(STDIN_FILENO);
-	close(STDOUT_FILENO);
 	error_close_fd(data, pipe_fd);
 	data.cmd_path2 = cmd_file(*data.cmd2, env);
 	ft_cmd_not_found(data.cmd_path2, data, data.infile);

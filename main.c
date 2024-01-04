@@ -6,7 +6,7 @@
 /*   By: ayal-ras <ayal-ras@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/25 14:20:41 by ayal-ras          #+#    #+#             */
-/*   Updated: 2024/01/04 18:42:04 by ayal-ras         ###   ########.fr       */
+/*   Updated: 2024/01/04 21:07:29 by ayal-ras         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,12 @@ int	main(int argc, char **argv, char **env)
 	t_data	data;
 	int		pipe_fd[2];
 
+	check_env(env);
 	if (argc == 5)
 	{
 		init(&data, argv);
 		if (pipe(pipe_fd) == -1)
-		{
-			close(pipe_fd[1]);
-			close(pipe_fd[0]);
-			error_close_fd(data, pipe_fd);
-			exit (1);
-		}
+			ft_pipe_error(pipe_fd, data);
 		data.pid_1 = fork();
 		pid_error(data.pid_1, data.infile);
 		if (data.pid_1 == 0)
