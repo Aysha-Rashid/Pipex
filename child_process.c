@@ -6,7 +6,7 @@
 /*   By: ayal-ras <ayal-ras@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/25 14:20:17 by ayal-ras          #+#    #+#             */
-/*   Updated: 2024/01/04 16:12:18 by ayal-ras         ###   ########.fr       */
+/*   Updated: 2024/01/04 17:51:07 by ayal-ras         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ void	child_process(t_data data, char **env, int *pipe_fd)
 		free_path(data.cmd2);
 		free_path(data.cmd1);
 		free(data.cmd_path2);
-		perror("execve failed");
+		write(2, strerror(errno), ft_strlen(strerror(errno)));
+		write(2, "\n", 1);
 		exit(1);
 	}
 }
@@ -51,7 +52,8 @@ void	another_child_process(t_data data, char **env, int *pipe_fd)
 		free_path(data.cmd2);
 		free_path(data.cmd1);
 		free(data.cmd_path1);
-		perror("execve failed");
+		write(2, strerror(errno), ft_strlen(strerror(errno)));
+		write(2, "\n", 1);
 		exit(1);
 	}
 }
