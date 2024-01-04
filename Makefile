@@ -8,7 +8,7 @@ SRC = main.c \
 	path.c \
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 OBJ = $(SRC:.c=.o)
 LIBFT_PATH = libft
 LIBFT_LIB = -L${LIBFT_PATH} -lft

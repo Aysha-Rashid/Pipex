@@ -6,7 +6,7 @@
 /*   By: ayal-ras <ayal-ras@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 18:13:33 by ayal-ras          #+#    #+#             */
-/*   Updated: 2023/12/30 18:14:23 by ayal-ras         ###   ########.fr       */
+/*   Updated: 2024/01/04 16:08:43 by ayal-ras         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,26 +19,36 @@ char	*cmd_file(char	*cmd, char **paths)
 
 	if (!cmd)
 		return (NULL);
-	i = 0;
-	while (cmd[i++])
-	{
-		if (cmd[i] == '/')
-		{
-			if (access(cmd, F_OK | X_OK) == 0)
-				return (cmd);
-			return (NULL);
-		}
-	}
+	cmd_file = given_path(cmd);
+	if (cmd_file)
+		return (cmd_file);
 	paths = paths_add_slash(paths);
-	i = -1;
-	while (paths[++i])
+	if (!paths)
+		return (NULL);
+	i = 0;
+	while (paths[i])
 	{
 		cmd_file = ft_strjoin(paths[i], cmd);
 		if (access(cmd_file, F_OK | X_OK) == 0)
+		{
+			free_path(paths);
 			return (cmd_file);
+		}
 		free(cmd_file);
+		i++;
 	}
+	free_path(paths);
 	return (NULL);
+}
+
+void	free_path(char **path)
+{
+	int	i;
+
+	i = 0;
+	while (path[i])
+		free(path[i++]);
+	free(path);
 }
 
 char	**find_paths_and_split(char **envp)
@@ -61,8 +71,12 @@ char	**find_paths_and_split(char **envp)
 		i++;
 	}
 	paths = ft_split(envp_path, ':');
-	if (envp_path)
-		free(envp_path);
+	free(envp_path);
+	if (!paths)
+	{
+		free(paths);
+		return (NULL);
+	}
 	return (paths);
 }
 
@@ -70,13 +84,35 @@ char	**paths_add_slash(char **env)
 {
 	int		i;
 	char	**paths;
+	char	*new_path;
 
 	paths = find_paths_and_split(env);
+	if (!paths)
+		return (NULL);
 	i = 0;
 	while (paths[i])
 	{
-		paths[i] = ft_strjoin(paths[i], "/");
+		new_path = ft_strjoin(paths[i], "/");
+		free(paths[i]);
+		paths[i] = new_path;
 		i++;
 	}
 	return (paths);
+}
+
+char	*given_path(char *cmd)
+{
+	int	i;
+
+	i = 0;
+	while (cmd[i++])
+	{
+		if (cmd[i] == '/')
+		{
+			if (access(cmd, F_OK | X_OK) == 0)
+				return (cmd);
+			return (NULL);
+		}
+	}
+	return (NULL);
 }

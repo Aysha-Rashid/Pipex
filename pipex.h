@@ -6,14 +6,18 @@
 /*   By: ayal-ras <ayal-ras@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 18:33:14 by ayal-ras          #+#    #+#             */
-/*   Updated: 2023/12/30 21:50:56 by ayal-ras         ###   ########.fr       */
+/*   Updated: 2024/01/04 15:26:41 by ayal-ras         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft/libft.h"
 #include <fcntl.h>
 #include <sys/wait.h>
+#include <sys/types.h>
+#include <signal.h>
 #include <stdio.h>
+#include <string.h>
+#include <errno.h>
 
 typedef struct s_data
 {
@@ -23,8 +27,6 @@ typedef struct s_data
 	char	**cmd2;
 	char	*cmd_path1;
 	char	*cmd_path2;
-	int		status;
-	int		status1;
 	int		infile;
 	int		outfile;
 }			t_data;
@@ -37,10 +39,13 @@ char	**ft_cmd(char *s);
 char	*cmd_file(char *cmd, char **env_path);
 char	**paths_add_slash(char **env);
 char	**find_paths_and_split(char **envp);
-void	dup2_error(void);
-void	pid_error(void);
-void	file_error(void);
+void	dup2_error(int files, int pipe_fd);
+void	pid_error(int pid, int files);
+void	file_error(int files);
 void	arg_error(void);
 void	close_error(void);
-void	ft_cmd_not_found(char *path_cmd);
-void	in_file_error(void);
+void	ft_cmd_not_found(char *path_cmd, t_data data);
+void	in_file_error(int infile);
+void	free_path(char **path);
+void	error_close_fd(t_data data, int	*pipe_fd);
+char	*given_path(char *cmd);

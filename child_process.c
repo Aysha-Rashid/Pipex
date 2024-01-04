@@ -6,7 +6,7 @@
 /*   By: ayal-ras <ayal-ras@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/25 14:20:17 by ayal-ras          #+#    #+#             */
-/*   Updated: 2023/12/30 21:33:27 by ayal-ras         ###   ########.fr       */
+/*   Updated: 2024/01/04 16:12:18 by ayal-ras         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,60 +16,50 @@ void	child_process(t_data data, char **env, int *pipe_fd)
 {
 	dup2(data.infile, STDIN_FILENO);
 	dup2(pipe_fd[1], STDOUT_FILENO);
-	close(pipe_fd[0]);
-	if (pipe_fd[0] == -1)
-		close_error();
-	if (data.infile == -1)
-		dup2_error();
-	if (pipe_fd[1] == -1)
-		dup2_error();
-	close(pipe_fd[1]);
-	if (pipe_fd[1] == -1)
-		close_error();
-	close(data.infile);
-	if (data.infile == -1)
-		close_error();
+	dup2_error(data.infile, pipe_fd[1]);
 	data.cmd_path1 = cmd_file(*data.cmd1, env);
-	ft_cmd_not_found(data.cmd_path1);
-	execve(data.cmd_path1, data.cmd1, NULL);
-	perror("execve failed");
-	exit(1);
+	ft_cmd_not_found(data.cmd_path1, data);
+	close(pipe_fd[0]);
+	close(pipe_fd[1]);
+	close(data.infile);
+	error_close_fd(data, pipe_fd);
+	if ((execve(data.cmd_path1, data.cmd1, NULL)) == -1)
+	{
+		free(data.cmd_path1);
+		free_path(data.cmd2);
+		free_path(data.cmd1);
+		free(data.cmd_path2);
+		perror("execve failed");
+		exit(1);
+	}
 }
 
 void	another_child_process(t_data data, char **env, int *pipe_fd)
 {
 	dup2(pipe_fd[0], STDIN_FILENO);
 	dup2(data.outfile, STDOUT_FILENO);
-	if (pipe_fd[0] == -1)
-		dup2_error();
-	if (data.outfile == -1)
-		dup2_error();
-	close(pipe_fd[0]);
-	if (pipe_fd[0] == -1)
-		close_error();
-	close(pipe_fd[1]);
-	if (pipe_fd[1] == -1)
-		close_error();
-	close(data.outfile);
-	if (data.outfile == -1)
-		close_error();
+	dup2_error(data.outfile, pipe_fd[0]);
 	data.cmd_path2 = cmd_file(*data.cmd2, env);
-	ft_cmd_not_found(data.cmd_path2);
-	execve(data.cmd_path2, data.cmd2, NULL);
-	perror("execve failed");
-	exit(1);
+	ft_cmd_not_found(data.cmd_path2, data);
+	close(pipe_fd[0]);
+	close(pipe_fd[1]);
+	close(data.outfile);
+	error_close_fd(data, pipe_fd);
+	if ((execve(data.cmd_path2, data.cmd2, NULL)) == -1)
+	{
+		free(data.cmd_path2);
+		free_path(data.cmd2);
+		free_path(data.cmd1);
+		free(data.cmd_path1);
+		perror("execve failed");
+		exit(1);
+	}
 }
 
 void	parent_process(t_data data, int *pipe_fd)
 {
 	int	i;
 
-	close(pipe_fd[1]);
-	if (pipe_fd[1] == -1)
-		close_error();
-	close(pipe_fd[0]);
-	if (pipe_fd[0] == -1)
-		close_error();
 	i = 0;
 	while (data.cmd1[i])
 		free(data.cmd1[i++]);
@@ -78,6 +68,26 @@ void	parent_process(t_data data, int *pipe_fd)
 	while (data.cmd2[i])
 		free(data.cmd2[i++]);
 	free(data.cmd2);
-	waitpid(data.pid_1, &data.status, 0);
-	waitpid(data.pid_2, &data.status1, 0);
+	close(pipe_fd[1]);
+	close(pipe_fd[0]);
+	close(data.infile);
+	close(data.outfile);
+	close(STDERR_FILENO);
+	close(STDIN_FILENO);
+	close(STDOUT_FILENO);
+	error_close_fd(data, pipe_fd);
+	wait(NULL);
+	wait(NULL);
+}
+
+void	error_close_fd(t_data data, int *pipe_fd)
+{
+	if (pipe_fd[1] == -1)
+		close_error();
+	if (pipe_fd[0] == -1)
+		close_error();
+	if (data.outfile == -1)
+		close_error();
+	if (data.outfile == -1)
+		close_error();
 }
