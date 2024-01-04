@@ -6,7 +6,7 @@
 /*   By: ayal-ras <ayal-ras@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 18:33:14 by ayal-ras          #+#    #+#             */
-/*   Updated: 2024/01/04 17:56:01 by ayal-ras         ###   ########.fr       */
+/*   Updated: 2024/01/04 19:07:21 by ayal-ras         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	pid_error(int pid, int files);
 void	file_error(int files);
 void	arg_error(void);
 void	close_error(void);
-void	ft_cmd_not_found(char *path_cmd, t_data data);
+void	ft_cmd_not_found(char *path_cmd, t_data data, int file);
 void	in_file_error(int infile);
 void	free_path(char **path);
 void	error_close_fd(t_data data, int	*pipe_fd);
