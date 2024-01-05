@@ -6,7 +6,7 @@
 /*   By: ayal-ras <ayal-ras@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 20:00:25 by ayal-ras          #+#    #+#             */
-/*   Updated: 2024/01/04 21:08:55 by ayal-ras         ###   ########.fr       */
+/*   Updated: 2024/01/04 21:17:54 by ayal-ras         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,6 @@ void	check_env(char **env)
 	if (env[0] == NULL)
 	{
 		write(2, "no env\n", 8);
-		exit(1);
+		exit(0);
 	}
 }
